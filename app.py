@@ -1,8 +1,7 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask
 import boto3
 import numpy as np
 app = Flask(__name__)
-
 
 @app.route('/object/copy', methods=['POST'])
 def create_store():
@@ -58,5 +57,5 @@ def create_store():
                     return {'message': e.response}
             return {'message': 'OK'}
 
-
-app.run(port=5000)
+if __name__ == "__main__":
+    app.run(debug=True)
