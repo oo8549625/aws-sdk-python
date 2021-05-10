@@ -42,21 +42,24 @@ def create_store():
         except Exception as e:
             return {'message': e.response}
         else:
-            objs = np.array(list(objects['Contents']))
-            for object in objs:
-                source_obj = source.get_object(
-                    Bucket=request_data['source_bucket'],
-                    Key=object['Key'],
-                )
-                try:
-                    dest.put_object(
-                        Bucket=request_data['dest_bucket'],
+            if 'Contents' not in objects:
+                return {'message': "objects not found"}
+            else:
+                objs = np.array(list(objects['Contents']))
+                for object in objs:
+                    source_obj = source.get_object(
+                        Bucket=request_data['source_bucket'],
                         Key=object['Key'],
-                        Body=source_obj['Body'].read()
                     )
-                except Exception as e:
-                    return {'message': e.response}
-            return {'message': 'OK'}
+                    try:
+                        dest.put_object(
+                            Bucket=request_data['dest_bucket'],
+                            Key=object['Key'],
+                            Body=source_obj['Body'].read()
+                        )
+                    except Exception as e:
+                        return {'message': e.response}
+                return {'message': 'OK'}
 
 
 if __name__ == "__main__":
