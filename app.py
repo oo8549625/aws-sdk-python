@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, request
 import boto3
 import numpy as np
 app = Flask(__name__)
+
 
 @app.route('/object/copy', methods=['POST'])
 def create_store():
@@ -56,6 +57,7 @@ def create_store():
                 except Exception as e:
                     return {'message': e.response}
             return {'message': 'OK'}
+
 
 if __name__ == "__main__":
     app.run(debug=True)
